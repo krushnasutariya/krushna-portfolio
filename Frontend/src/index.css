@@ -1,0 +1,172 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap");
+
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family:
+    "Manrope",
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  background: #111111;
+  color: white;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Make Tailwind heavy fonts less bulky */
+.font-black {
+  font-weight: 750;
+}
+
+.font-bold {
+  font-weight: 650;
+}
+
+.font-extrabold {
+  font-weight: 700;
+}
+
+/* Make all font-serif text look premium */
+.font-serif {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+::selection {
+  background: #67e8f9;
+  color: #111111;
+}
+
+/* Moving border like, but softer */
+.animated-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.animated-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(103, 232, 249, 0.8) 70deg,
+    transparent 130deg,
+    transparent 220deg,
+    rgba(249, 115, 22, 0.55) 280deg,
+    transparent 360deg
+  );
+  animation: rotate-border 6s linear infinite;
+  opacity: 0.7;
+}
+
+.animated-card::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 23px;
+  background: #252525;
+}
+
+.animated-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Soft card without loud border */
+.soft-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(145deg, #262626, #202020);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes rotate-border {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Hide ugly browser scrollbars inside horizontal strips */
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes skill-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.skill-marquee {
+  animation: skill-marquee 28s linear infinite;
+}
+
+.skill-marquee:hover {
+  animation-play-state: paused;
+}
+
+.timeline-glow {
+  box-shadow: 0 0 0 5px rgba(103, 232, 249, 0.12);
+}
+
+/* Premium moving border for main layout cards */
+.premium-glow-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+}
+
+.premium-glow-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 55deg,
+    rgba(103, 232, 249, 0.85) 95deg,
+    rgba(249, 115, 22, 0.75) 135deg,
+    transparent 180deg,
+    transparent 250deg,
+    rgba(103, 232, 249, 0.6) 290deg,
+    transparent 360deg
+  );
+  animation: premium-border-spin 7s linear infinite;
+  opacity: 0.75;
+}
+
+.premium-glow-card::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 27px;
+  background: #1f1f1f;
+  z-index: 1;
+}
+
+.premium-glow-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes premium-border-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

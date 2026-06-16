@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+Frontend/node_modules/
+
+# build outputs
+dist/
+Frontend/dist/
+
+# backend virtual environments
+Backend/venv/
+Backend/.venv/
+venv/
+.venv/
+
+# environment variables
+.env
+.env.local
+Frontend/.env
+Frontend/.env.local
+Backend/.env
+
+# system files
+.DS_Store
+
+# python cache
+__pycache__/
+*.pyc
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
