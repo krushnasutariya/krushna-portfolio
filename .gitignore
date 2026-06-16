@@ -30,3 +30,6 @@ __pycache__/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# add messages in message.json file
+Backend/messages.json
