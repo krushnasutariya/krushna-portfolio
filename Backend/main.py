@@ -1,10 +1,17 @@
 from datetime import datetime
 import json
+import os
 from pathlib import Path
 
+import resend
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
+
+# Load secret values from Backend/.env
+load_dotenv()
+
 
 app = FastAPI(
     title="Krushna Portfolio Backend",
@@ -12,7 +19,6 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# These are frontend URLs allowed to call this backend during development.
 allowed_origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
@@ -27,7 +33,6 @@ app.add_middleware(
 )
 
 
-# This file will store contact form messages.
 MESSAGES_FILE = Path("messages.json")
 
 
@@ -72,10 +77,6 @@ PROFILE_DATA = {
 
 
 def read_messages():
-    """
-    Read all saved contact messages from messages.json.
-    If file does not exist yet, return an empty list.
-    """
     if not MESSAGES_FILE.exists():
         return []
 
@@ -84,11 +85,67 @@ def read_messages():
 
 
 def save_messages(messages):
-    """
-    Save all contact messages into messages.json.
-    """
     with open(MESSAGES_FILE, "w", encoding="utf-8") as file:
         json.dump(messages, file, indent=2, ensure_ascii=False)
+
+
+def send_email_notification(saved_message):
+    """
+    Send email notification using Resend API.
+
+    If Resend settings are missing in .env, email sending is skipped safely.
+    """
+
+    resend_api_key = os.getenv("RESEND_API_KEY")
+    resend_from_email = os.getenv("RESEND_FROM_EMAIL")
+    resend_to_email = os.getenv("RESEND_TO_EMAIL")
+
+    if not all([resend_api_key, resend_from_email, resend_to_email]):
+        return {
+            "email_sent": False,
+            "provider": "resend",
+            "reason": "Resend settings are missing in .env",
+        }
+
+    resend.api_key = resend_api_key
+
+    subject = f"New portfolio message from {saved_message['name']}"
+
+    html_message = f"""
+    <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+      <h2>New Portfolio Contact Message</h2>
+
+      <p><strong>Name:</strong><br />{saved_message['name']}</p>
+      <p><strong>Email:</strong><br />{saved_message['email']}</p>
+      <p><strong>Message:</strong><br />{saved_message['message']}</p>
+      <p><strong>Received at:</strong><br />{saved_message['created_at']}</p>
+    </div>
+    """
+
+    try:
+        params = {
+            "from": resend_from_email,
+            "to": [resend_to_email],
+            "subject": subject,
+            "html": html_message,
+            "reply_to": saved_message["email"],
+        }
+
+        email_response = resend.Emails.send(params)
+
+        return {
+            "email_sent": True,
+            "provider": "resend",
+            "reason": "Email notification sent successfully",
+            "response": email_response,
+        }
+
+    except Exception as error:
+        return {
+            "email_sent": False,
+            "provider": "resend",
+            "reason": str(error),
+        }
 
 
 @app.get("/")
@@ -121,10 +178,13 @@ def save_contact_message(contact_message: ContactMessage):
     messages.append(new_message)
     save_messages(messages)
 
+    email_result = send_email_notification(new_message)
+
     return {
         "status": "success",
         "message": "Message received successfully",
         "saved_message": new_message,
+        "email_result": email_result,
     }
 
 
