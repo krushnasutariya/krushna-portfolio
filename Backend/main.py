@@ -5,17 +5,18 @@ from pathlib import Path
 
 import resend
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
+from google import genai
+from cv_context import CV_CONTEXT
 
 # Load secret values from Backend/.env
 load_dotenv()
 
-
 app = FastAPI(
     title="Krushna Portfolio Backend",
-    description="Backend API for portfolio, CV data, contact form and future AI chat assistant.",
+    description="Backend API for portfolio, CV data, contact form, email notification and chat assistant.",
     version="1.0.0",
 )
 
@@ -148,6 +149,62 @@ def send_email_notification(saved_message):
         }
 
 
+def create_ai_chat_reply(user_message, chat_history=None):
+    """
+    Generate a portfolio assistant reply using Gemini API.
+    The assistant answers from CV_CONTEXT, not from random internet knowledge.
+    """
+
+    gemini_api_key = os.getenv("GEMINI_API_KEY")
+
+    if not gemini_api_key:
+        return (
+            "AI assistant is not configured yet. You can still ask about "
+            "Krushna's skills, projects, experience, education, and contact."
+        )
+
+    if chat_history is None:
+        chat_history = []
+
+    recent_history_text = ""
+    for item in chat_history[-8:]:
+        sender = item.get("sender", "visitor")
+        message = item.get("message", "")
+        recent_history_text += f"{sender}: {message}\n"
+
+    prompt = f"""
+{CV_CONTEXT}
+
+Recent conversation:
+{recent_history_text}
+
+Visitor question:
+{user_message}
+
+Answer as Krushna's portfolio assistant:
+"""
+
+    try:
+        client = genai.Client(api_key=gemini_api_key)
+
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+        )
+
+        if response.text:
+            return response.text.strip()
+
+        return "I understood the question, but I could not generate a clear answer."
+
+    except Exception as error:
+        print(f"Gemini API error: {error}")
+        return (
+            "AI assistant is temporarily unavailable. You can still ask about "
+            "Krushna's React, Python, FastAPI, cloud, projects, or BMW internship experience."
+        )
+
+
 @app.get("/")
 def home():
     return {"message": "Krushna portfolio backend is running"}
@@ -194,3 +251,34 @@ def get_messages():
         "total": len(read_messages()),
         "messages": read_messages(),
     }
+
+
+@app.websocket("/ws/chat")
+async def chat_websocket(websocket: WebSocket):
+    """
+    WebSocket chat endpoint.
+
+    Frontend connects here and keeps the connection open.
+    Every user message receives a backend reply.
+    """
+
+    await websocket.accept()
+
+    try:
+        while True:
+            data = await websocket.receive_json()
+            user_message = data.get("message", "")
+            chat_history = data.get("history", [])
+
+            reply = create_ai_chat_reply(user_message, chat_history)
+
+            await websocket.send_json(
+                {
+                    "sender": "assistant",
+                    "message": reply,
+                    "created_at": datetime.now().isoformat(timespec="seconds"),
+                }
+            )
+
+    except WebSocketDisconnect:
+        print("Chat client disconnected")

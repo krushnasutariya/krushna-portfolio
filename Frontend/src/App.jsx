@@ -1,7 +1,7 @@
 import { useState } from "react";
+import ChatAssistant from "./components/ChatAssistant";
 import MainContent from "./components/MainContent";
 import ProfileSidebar from "./components/ProfileSidebar";
-
 function App() {
   const [activeSection, setActiveSection] = useState("about");
 
@@ -19,6 +19,7 @@ function App() {
       <footer className="mt-7 text-center text-xs font-semibold text-stone-500">
         © 2026 Krushnaben Sutariya | All Rights Reserved
       </footer>
+      <ChatAssistant />
     </main>
   );
 }
