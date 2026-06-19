@@ -7,6 +7,7 @@ import {
   HiOutlineUser,
   HiOutlineXMark,
 } from "react-icons/hi2";
+import BrandLogo from "./BrandLogo";
 
 function ChatAssistant() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,7 +16,7 @@ function ChatAssistant() {
     {
       sender: "assistant",
       message:
-        "Hi, I am Krushna's AI assistant. Ask me about her skills, projects, BMW internship, cloud work, thesis, or contact details.",
+        "Hi, I am Krushna's AI assistant. Ask me about skills, projects, BMW internship, cloud work, thesis, or contact details.",
     },
   ]);
   const [inputMessage, setInputMessage] = useState("");
@@ -105,9 +106,7 @@ function ChatAssistant() {
           >
             <div className="flex items-center justify-between border-b border-white/10 bg-[#252525] p-5">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-300/40 bg-cyan-300/10 text-xl text-cyan-300">
-                  <HiOutlineSparkles />
-                </div>
+                <BrandLogo size="xs" />
 
                 <div>
                   <h3 className="text-sm font-extrabold text-white">
@@ -127,6 +126,12 @@ function ChatAssistant() {
                 <HiOutlineXMark />
               </button>
             </div>
+
+            {connectionStatus === "error" && (
+              <div className="border-b border-red-400/20 bg-red-400/10 px-5 py-3 text-xs font-semibold text-red-300">
+                Assistant is temporarily unavailable.
+              </div>
+            )}
 
             <div className="h-80 space-y-4 overflow-y-auto p-5">
               {messages.map((chatMessage, index) => (

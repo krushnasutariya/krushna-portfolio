@@ -98,16 +98,6 @@ function ProfileSidebar() {
             </motion.a>
           ))}
         </div>
-
-        <motion.div
-          whileHover={{ y: -3 }}
-          className="mt-7 rounded-2xl border border-cyan-300/20 bg-cyan-300/10 p-4"
-        >
-          <p className="text-sm font-black text-cyan-300">We are here!</p>
-          <p className="mt-2 text-xs leading-5 text-stone-400">
-            Ask about projects, skills, or CV. AI assistant coming next.
-          </p>
-        </motion.div>
       </div>
     </motion.aside>
   );
