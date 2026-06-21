@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: krushna-portfolio-backend
+    env_file:
+      - ./Backend/.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Backend/messages.json:/app/messages.json
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: krushna-portfolio-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

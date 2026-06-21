@@ -1,18 +1,21 @@
-import { motion } from "motion/react";
 import { useState } from "react";
 import { HiOutlinePaperAirplane } from "react-icons/hi2";
-import BackendStatus from "./BackendStatus";
 import SectionTitle from "./SectionTitle";
 
 function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    subject: "",
     message: "",
   });
 
-  const [submitStatus, setSubmitStatus] = useState("idle");
-  const [submitMessage, setSubmitMessage] = useState("");
+  const [formStatus, setFormStatus] = useState({
+    type: "",
+    message: "",
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function handleInputChange(event) {
     const { name, value } = event.target;
@@ -26,8 +29,15 @@ function Contact() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    setSubmitStatus("loading");
-    setSubmitMessage("Sending message...");
+    setIsSubmitting(true);
+    setFormStatus({
+      type: "",
+      message: "",
+    });
+
+    const finalMessage = formData.subject
+      ? `Subject: ${formData.subject}\n\n${formData.message}`
+      : formData.message;
 
     try {
       const response = await fetch("http://localhost:8000/api/contact", {
@@ -35,121 +45,113 @@ function Contact() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: finalMessage,
+        }),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.detail || "Something went wrong");
+        throw new Error("Message could not be sent.");
       }
 
-      setSubmitStatus("success");
-      setSubmitMessage("Message sent successfully.");
+      setFormStatus({
+        type: "success",
+        message: "Thank you. Your message has been sent successfully.",
+      });
 
       setFormData({
         name: "",
         email: "",
+        subject: "",
         message: "",
       });
     } catch (error) {
-      setSubmitStatus("error");
-      setSubmitMessage("Message could not be sent. Please check backend.");
+      setFormStatus({
+        type: "error",
+        message:
+          "Sorry, something went wrong. Please contact me directly by email.",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
   return (
-    <section id="contact">
-      <SectionTitle title="Let's Connect" />
+    <section>
+      <SectionTitle label="Contact" title="Contact" />
 
-      <BackendStatus />
-
-      <div className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-[#121212]">
-        <div className="relative h-80 overflow-hidden bg-[#0b0b0b]">
+      <div className="mt-10">
+        <div className="overflow-hidden rounded-3xl border border-white/10 bg-[#252525]">
           <iframe
             title="Leutkirch im Allgäu map"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=10.0000%2C47.7800%2C10.0800%2C47.8500&layer=mapnik"
-            className="h-full w-full border-0 opacity-60 grayscale invert"
-          />
-
-          <div className="absolute left-6 top-6 rounded-2xl bg-black/75 p-5 backdrop-blur">
-            <p className="text-sm font-black text-white">Leutkirch im Allgäu</p>
-            <p className="mt-1 text-xs text-stone-400">Germany</p>
-            <p className="mt-3 text-xs font-bold text-cyan-300">
-              Open to remote, hybrid and nearby onsite roles
-            </p>
-          </div>
-
-          <div className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-cyan-300/20">
-            <div className="h-7 w-7 rounded-full bg-cyan-300 shadow-[0_0_0_12px_rgba(103,232,249,0.12)]" />
-          </div>
-        </div>
-      </div>
-
-      <motion.form
-        onSubmit={handleSubmit}
-        initial={{ opacity: 0, y: 22 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, delay: 0.1 }}
-        className="mt-8 rounded-3xl border border-white/10 bg-[#252525] p-7 shadow-2xl shadow-black/20"
-      >
-        <h3 className="text-2xl font-extrabold text-white">Contact Form</h3>
-
-        <div className="mt-6 grid gap-5 md:grid-cols-2">
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            placeholder="Full Name"
-            required
-            className="rounded-2xl border border-white/10 bg-[#1b1b1b] px-5 py-4 text-sm text-white outline-none transition placeholder:text-stone-600 focus:border-cyan-300"
-          />
-
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            placeholder="Email Address"
-            required
-            className="rounded-2xl border border-white/10 bg-[#1b1b1b] px-5 py-4 text-sm text-white outline-none transition placeholder:text-stone-600 focus:border-cyan-300"
+            src="https://www.google.com/maps?q=Leutkirch%20im%20Allg%C3%A4u%2C%20Germany&output=embed"
+            className="h-[400px] w-full border-0 grayscale"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
           />
         </div>
 
-        <textarea
-          name="message"
-          value={formData.message}
-          onChange={handleInputChange}
-          rows="6"
-          placeholder="Your Message"
-          required
-          className="mt-5 w-full resize-none rounded-2xl border border-white/10 bg-[#1b1b1b] px-5 py-4 text-sm text-white outline-none transition placeholder:text-stone-600 focus:border-cyan-300"
-        />
+        <h3 className="mt-8 text-2xl font-extrabold text-white">
+          Contact Form
+        </h3>
 
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
-          <p
-            className={`text-xs font-semibold ${
-              submitStatus === "success"
-                ? "text-cyan-300"
-                : submitStatus === "error"
-                  ? "text-red-400"
-                  : "text-stone-500"
-            }`}
-          >
-            {submitMessage || "Your message will be saved through FastAPI."}
-          </p>
+        <form onSubmit={handleSubmit} className="mt-6">
+          <div className="grid gap-5 md:grid-cols-2">
+            <input
+              name="name"
+              type="text"
+              required
+              value={formData.name}
+              onChange={handleInputChange}
+              placeholder="Full name"
+              className="rounded-2xl border border-white/10 bg-[#1f1f1f] px-6 py-4 text-sm font-semibold text-white outline-none transition placeholder:text-stone-500 focus:border-cyan-300"
+            />
+
+            <input
+              name="email"
+              type="email"
+              required
+              value={formData.email}
+              onChange={handleInputChange}
+              placeholder="Email address"
+              className="rounded-2xl border border-white/10 bg-[#1f1f1f] px-6 py-4 text-sm font-semibold text-white outline-none transition placeholder:text-stone-500 focus:border-cyan-300"
+            />
+          </div>
+
+          <textarea
+            name="message"
+            required
+            rows="7"
+            value={formData.message}
+            onChange={handleInputChange}
+            placeholder="Your message"
+            className="mt-5 w-full resize-none rounded-2xl border border-white/10 bg-[#1f1f1f] px-6 py-4 text-sm font-semibold text-white outline-none transition placeholder:text-stone-500 focus:border-cyan-300"
+          />
+
+          {formStatus.message && (
+            <div
+              className={`mt-5 rounded-2xl border px-5 py-4 text-sm font-bold ${
+                formStatus.type === "success"
+                  ? "border-cyan-300/30 bg-cyan-300/10 text-cyan-300"
+                  : "border-red-400/30 bg-red-400/10 text-red-300"
+              }`}
+            >
+              {formStatus.message}
+            </div>
+          )}
 
           <button
             type="submit"
-            disabled={submitStatus === "loading"}
-            className="inline-flex items-center gap-2 rounded-2xl border border-cyan-300/60 px-6 py-3 text-sm font-black text-cyan-300 transition hover:-translate-y-1 hover:bg-cyan-300 hover:text-[#111] disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={isSubmitting}
+            className="mt-6 flex w-full items-center justify-center gap-3 rounded-2xl border border-cyan-300/70 px-5 py-4 text-sm font-extrabold text-cyan-300 transition hover:bg-cyan-300 hover:text-[#111] disabled:cursor-not-allowed disabled:opacity-60"
           >
             <HiOutlinePaperAirplane />
-            {submitStatus === "loading" ? "Sending..." : "Send Message"}
+            {isSubmitting ? "Sending..." : "Send message"}
           </button>
-        </div>
-      </motion.form>
+        </form>
+      </div>
     </section>
   );
 }

@@ -24,7 +24,7 @@ function ProfileSidebar() {
     {
       name: "Email",
       icon: <MdEmail />,
-      href: "mailto:krushnasutariya19@gmail.com",
+      href: "https://mail.google.com/mail/?view=cm&fs=1&to=krushnasutariya19@gmail.com",
     },
     {
       name: "CV",
@@ -88,8 +88,9 @@ function ProfileSidebar() {
             <motion.a
               key={social.name}
               href={social.href}
-              target="_blank"
-              rel="noreferrer"
+              target={social.href.startsWith("mailto:") ? "_self" : "_blank"}
+              rel={social.href.startsWith("mailto:") ? undefined : "noreferrer"}
+              aria-label={social.name}
               whileHover={{ y: -4, scale: 1.08 }}
               className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#2b2b2b] text-base text-white transition hover:bg-cyan-300 hover:text-[#111]"
               title={social.name}
