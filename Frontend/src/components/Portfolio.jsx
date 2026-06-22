@@ -5,30 +5,42 @@ import SectionTitle from "./SectionTitle";
 function Portfolio() {
   const projects = [
     {
-      title: "Portfolio Website",
+      title: "Full-Stack Portfolio Website",
       urlText: "krushnasutariya.github.io/krushna-portfolio",
       description:
-        "Personal portfolio website built with React, Tailwind CSS and Motion. It presents my profile, resume, skills, projects, contact page and future AI assistant idea.",
-      stack: ["React", "Tailwind CSS", "Motion", "Responsive UI"],
-      status: "In Progress",
-      image: "/project-images/portfolio-preview.png",
-      liveLink: "#",
-      githubLink: "https://github.com/krushnasutariya",
+        "Completed and deployed full-stack personal portfolio website with a React frontend, FastAPI backend, WebSocket-based Gemini AI assistant, Resend-powered contact form, Docker setup, and GitHub Pages + Hugging Face Spaces deployment.",
+      stack: [
+        "React",
+        "Vite",
+        "Tailwind CSS",
+        "Motion",
+        "FastAPI",
+        "WebSockets",
+        "Gemini API",
+        "Resend",
+        "Docker",
+        "GitHub Actions",
+      ],
+      status: "Live",
+      image: `${import.meta.env.BASE_URL}project-images/portfolio-preview.png`,
+      liveLink: "https://krushnasutariya.github.io/krushna-portfolio/",
+      githubLink: "https://github.com/krushnasutariya/krushna-portfolio",
     },
     {
       title: "Sky Map Weather",
       urlText: "krushnasutariya.github.io/sky-map-weather",
       description:
-        "Responsive weather map application with city search, interactive map selection, live weather data, forecast details and custom weather UI components.",
+        "Responsive weather map application with city search, interactive map selection, current weather data, forecast details, custom weather UI, OpenWeather API integration, and GitHub Pages deployment.",
       stack: [
         "React",
         "Vite",
         "Tailwind CSS",
         "React Leaflet",
         "OpenWeather API",
+        "GitHub Pages",
       ],
       status: "Live",
-      image: "/project-images/sky-map-weather-preview.png",
+      image: `${import.meta.env.BASE_URL}project-images/sky-map-weather-preview.png`,
       liveLink: "https://krushnasutariya.github.io/sky-map-weather/",
       githubLink: "https://github.com/krushnasutariya/sky-map-weather",
     },
@@ -39,8 +51,9 @@ function Portfolio() {
       <SectionTitle title="Creative Showcase" />
 
       <p className="mt-7 max-w-3xl leading-8 text-stone-400">
-        A focused selection of projects I can currently demonstrate with a live
-        or GitHub-ready version.
+        A focused selection of live, publicly demonstrable projects showing my
+        frontend, full-stack, API integration, cloud, Docker, and deployment
+        skills.
       </p>
 
       <div className="mt-10 grid gap-8 md:grid-cols-2">
