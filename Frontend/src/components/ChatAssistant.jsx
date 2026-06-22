@@ -9,6 +9,8 @@ import {
 } from "react-icons/hi2";
 import BrandLogo from "./BrandLogo";
 
+const WS_URL = import.meta.env.VITE_WS_URL || "ws://localhost:8000/ws/chat";
+
 function ChatAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState("closed");
@@ -27,7 +29,7 @@ function ChatAssistant() {
   useEffect(() => {
     if (!isOpen) return;
 
-    const socket = new WebSocket("ws://localhost:8000/ws/chat");
+    const socket = new WebSocket(WS_URL);
     socketRef.current = socket;
 
     setConnectionStatus("connecting");

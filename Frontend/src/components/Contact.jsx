@@ -2,6 +2,9 @@ import { useState } from "react";
 import { HiOutlinePaperAirplane } from "react-icons/hi2";
 import SectionTitle from "./SectionTitle";
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
 function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -40,7 +43,7 @@ function Contact() {
       : formData.message;
 
     try {
-      const response = await fetch("http://localhost:8000/api/contact", {
+      const response = await fetch(`${API_BASE_URL}/api/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
