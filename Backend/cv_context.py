@@ -273,6 +273,8 @@ Project details:
 - Relevant for cloud, DevOps, Docker, CI/CD, and deployment questions.
 
 5. Serverless Online Grocery Application
+Status: Code-only public GitHub project / not currently live-hosted
+GitHub repository: github.com/krushnasutariya/serverless-online-grocery
 Technologies:
 - AWS
 - Terraform
@@ -280,16 +282,27 @@ Technologies:
 - Amazon S3
 - DynamoDB
 - API Gateway
-- GitLab CI/CD
+- IAM
+- Git
+- CI/CD concepts
+- HTML
+- CSS
+- JavaScript
+- Python
 
 Project details:
-- Built a serverless online grocery application architecture.
-- Used AWS services.
-- Used Terraform for infrastructure as code.
-- Used AWS Lambda for serverless backend logic.
-- Used S3, DynamoDB, and API Gateway.
-- Used GitLab CI/CD for automation.
-- Relevant for AWS, cloud, serverless, infrastructure as code, and DevOps questions.
+- Built a code-only academic serverless online grocery application architecture.
+- The project demonstrates a simple grocery web application using a static frontend and serverless AWS backend services.
+- Frontend code is included in the front-end folder using HTML, CSS, and JavaScript.
+- Backend logic is designed using AWS Lambda functions.
+- API Gateway is used to expose backend endpoints.
+- DynamoDB is used as the serverless NoSQL database.
+- Amazon S3 is used for static frontend hosting in the architecture.
+- Terraform is used for infrastructure provisioning and modular cloud resource management.
+- IAM is included for AWS permission management.
+- The repository includes Terraform folders, modules, Lambda handler structure, frontend files, and project report material.
+- The project is public on GitHub but not deployed as a live public demo to avoid cloud hosting costs and unnecessary public exposure of AWS resources.
+- Relevant for AWS, cloud architecture, serverless applications, Terraform, Infrastructure as Code, CI/CD concepts, and DevOps questions.
 
 6. Movie Recommendation System
 Technologies:
@@ -348,7 +361,7 @@ LANGUAGES:
 
 ANSWERING RULES:
 - If asked "which project is in progress", say there is no major current in-progress portfolio project mentioned; the Full-Stack Portfolio Website and Sky Map Weather are live/completed projects.
-- If asked "which project is live", mention Full-Stack Portfolio Website and Sky Map Weather Application.
+- If asked "which project is live", mention Full-Stack Portfolio Website and Sky Map Weather Application. Clarify that the Serverless Online Grocery Application is available as public GitHub source code but is not live-hosted.
 - If asked about the portfolio website, say it is completed, Dockerized, deployed live, and includes React, FastAPI, WebSockets, Gemini AI assistant, Resend email notification, Docker Compose, GitHub Actions, GitHub Pages, and Hugging Face Spaces.
 - If asked about AWS or cloud, mention Serverless Online Grocery Application, DevOps/SecOps CI/CD Automation Project, and the deployed portfolio backend on Hugging Face Spaces if relevant.
 - If asked about backend, mention FastAPI portfolio backend, REST APIs, WebSockets, Python, Pydantic, Resend API, Gemini API integration, SQL Server, and DynamoDB.
@@ -356,6 +369,7 @@ ANSWERING RULES:
 - If asked about total web/design experience, explain that she has earlier web design experience from Savaj Infotech plus frontend development experience from Techsphere and BMW-related frontend work.
 - If asked about AI, mention thesis, movie recommendation system, LLM concepts, explainable AI, recommender systems, Gemini AI assistant, Scikit-learn, Pandas, and NumPy.
 - If asked about BMW, explain the internship but do not claim public code.
+- If asked about the Serverless Online Grocery Application, say it is a public GitHub code project, not a live-hosted demo, and explain that it demonstrates AWS serverless architecture using S3, Lambda, DynamoDB, API Gateway, IAM, Terraform, and CI/CD concepts.
 - If asked about current status of thesis, say it was submitted in April 2026 and is completed academic work.
 - If asked about contact, provide email and mention the contact form on the live portfolio.
 - Do not invent salary, visa status, private details, or unavailable project links.
