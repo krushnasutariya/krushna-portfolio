@@ -44,6 +44,27 @@ function Portfolio() {
       liveLink: "https://krushnasutariya.github.io/sky-map-weather/",
       githubLink: "https://github.com/krushnasutariya/sky-map-weather",
     },
+    {
+      title: "Serverless Online Grocery Application",
+      urlText: "GitHub source code available",
+      description:
+        "Academic cloud project demonstrating a serverless online grocery application architecture on AWS using Terraform for infrastructure provisioning, Lambda for backend logic, DynamoDB for data storage, S3, API Gateway, IAM, and GitLab CI/CD automation.",
+      stack: [
+        "AWS",
+        "Terraform",
+        "Lambda",
+        "S3",
+        "DynamoDB",
+        "API Gateway",
+        "IAM",
+        "GitLab CI/CD",
+      ],
+      status: "Code",
+      image: `${import.meta.env.BASE_URL}project-images/grocery-store-preview.png`,
+      liveLink: "",
+      githubLink:
+        "https://github.com/krushnasutariya/serverless-online-grocery",
+    },
   ];
 
   return (
@@ -51,7 +72,7 @@ function Portfolio() {
       <SectionTitle title="Creative Showcase" />
 
       <p className="mt-7 max-w-3xl leading-8 text-stone-400">
-        A focused selection of live, publicly demonstrable projects showing my
+        A focused selection of live and GitHub-based projects showing my
         frontend, full-stack, API integration, cloud, Docker, and deployment
         skills.
       </p>
@@ -111,15 +132,17 @@ function ProjectCard({ project, index }) {
         </div>
 
         <div className="mt-7 flex flex-wrap gap-3">
-          <a
-            href={project.liveLink}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-cyan-300/60 px-5 py-2.5 text-sm font-black text-cyan-300 transition hover:-translate-y-1 hover:bg-cyan-300 hover:text-[#111]"
-          >
-            <FaExternalLinkAlt />
-            Live Demo
-          </a>
+          {project.liveLink && (
+            <a
+              href={project.liveLink}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-cyan-300/60 px-5 py-2.5 text-sm font-black text-cyan-300 transition hover:-translate-y-1 hover:bg-cyan-300 hover:text-[#111]"
+            >
+              <FaExternalLinkAlt />
+              Live Demo
+            </a>
+          )}
 
           <a
             href={project.githubLink}

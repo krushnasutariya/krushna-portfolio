@@ -29,7 +29,7 @@ function ProfileSidebar() {
     {
       name: "CV",
       icon: <BsFileEarmarkPerson />,
-      href: "/Krushna_Sutariya_CV.pdf",
+      href: `${import.meta.env.BASE_URL}Krushna_Sutariya_CV.pdf`,
     },
   ];
 
