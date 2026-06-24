@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Frontend/public/ks-logo-transparent.png" alt="Krushna Sutariya KS Logo" width="120" />
+  <img src="Frontend/public/favicon..png" alt="Krushna Sutariya KS Logo" width="120" />
 </p>
 
 <h1 align="center">Krushna Sutariya - Full-Stack Portfolio Website</h1>
